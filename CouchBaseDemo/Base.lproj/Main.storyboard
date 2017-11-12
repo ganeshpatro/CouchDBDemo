@@ -55,6 +55,21 @@
                                     <action selector="onClickOfSave:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VnI-fj-Saa"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="3yP-pN-zh8">
+                                <rect key="frame" x="177.5" y="59" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="QUl-aW-ufS"/>
+                                    <constraint firstAttribute="height" constant="20" id="WWV-eL-V7x"/>
+                                </constraints>
+                                <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Ofi-OM-Xkt">
+                                <rect key="frame" x="68" y="93" width="239" height="2"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="239" id="N1z-rD-3EX"/>
+                                    <constraint firstAttribute="height" constant="2" id="lUp-Ei-x0y"/>
+                                </constraints>
+                            </progressView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -64,15 +79,21 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="BkO-Kn-DPX" secondAttribute="trailing" constant="42" id="Iw0-TZ-ACi"/>
                             <constraint firstItem="FdQ-nK-6gH" firstAttribute="top" secondItem="CSd-No-yeg" secondAttribute="bottom" constant="21" id="ODK-zq-Ye7"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="CSd-No-yeg" secondAttribute="trailing" constant="42" id="OXL-36-5db"/>
+                            <constraint firstItem="3yP-pN-zh8" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="39" id="Ozx-0d-Yya"/>
+                            <constraint firstItem="3yP-pN-zh8" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="RKM-RB-nil"/>
+                            <constraint firstItem="Ofi-OM-Xkt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="YH5-ie-cRc"/>
                             <constraint firstItem="BkO-Kn-DPX" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="97" id="d77-d9-DQm"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="FdQ-nK-6gH" secondAttribute="trailing" constant="42" id="gZI-Zh-3FY"/>
                             <constraint firstItem="4fU-gV-Nh4" firstAttribute="top" secondItem="FdQ-nK-6gH" secondAttribute="bottom" constant="28" id="kzg-sk-96X"/>
                             <constraint firstItem="BkO-Kn-DPX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="34" id="lT2-jc-9cJ"/>
+                            <constraint firstItem="Ofi-OM-Xkt" firstAttribute="top" secondItem="3yP-pN-zh8" secondAttribute="bottom" constant="14" id="tpG-WU-6LP"/>
                             <constraint firstItem="CSd-No-yeg" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="34" id="wNj-uH-Hss"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="3yP-pN-zh8" id="9NU-ey-WNE"/>
+                        <outlet property="progressBar" destination="Ofi-OM-Xkt" id="DWb-cp-Ma0"/>
                         <outlet property="tfBranch" destination="FdQ-nK-6gH" id="xan-X4-CKs"/>
                         <outlet property="tfName" destination="BkO-Kn-DPX" id="uyd-k2-4rF"/>
                         <outlet property="tfRollNumber" destination="CSd-No-yeg" id="H8h-hM-fgl"/>

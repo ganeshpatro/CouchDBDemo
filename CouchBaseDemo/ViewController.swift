@@ -17,6 +17,11 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var tfBranch: UITextField!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    @IBOutlet weak var progressBar: UIProgressView!
+    
+    
     
     @IBAction func onClickOfSave(_ sender: Any) {
         self.save()
@@ -25,6 +30,8 @@ class ViewController: UIViewController {
     // Create a manager
     let manager = CBLManager.sharedInstance()
     var database: CBLDatabase!
+    var push: CBLReplication!
+    var pull: CBLReplication!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,8 +47,8 @@ class ViewController: UIViewController {
         
         // Create replicators to push & pull changes to & from Sync Gateway
         let url = URL(string: "http://34.212.115.252:4984/db")!
-        let push = database.createPushReplication(url)
-        let pull = database.createPullReplication(url)
+        push = database.createPushReplication(url)
+        pull = database.createPullReplication(url)
         push.continuous = true
         pull.continuous = true
 
@@ -66,6 +73,8 @@ class ViewController: UIViewController {
                 }
             }
         }
+        
+        observerInitialSyncing()
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,7 +83,7 @@ class ViewController: UIViewController {
     }
     
     func save() {
-        let properties = ["name": tfName.text,
+        var properties = ["name": tfName.text,
                           "roll_no": tfRollNumber.text,
                           "branch":tfBranch.text,
                            ]
@@ -91,7 +100,7 @@ class ViewController: UIViewController {
                     return true
                 })
             } else {
-               try document.putProperties(properties)
+                try document.putProperties(properties)
             }
         } catch {
             print("Can't save document in database")
@@ -103,5 +112,38 @@ class ViewController: UIViewController {
         print("Document ID :: \(document.documentID)")
        // print("Learning \(document.property(forKey: "sdk")!)")
     }
+    
+    fileprivate func observerInitialSyncing() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(replicationChanged),
+                                                         name: NSNotification.Name.cblReplicationChange,
+                                                         object: push)
+        NotificationCenter.default.addObserver(self,
+                                                         selector: #selector(replicationChanged),
+                                                         name: NSNotification.Name.cblReplicationChange,
+                                                         object: pull)
+    }
+    
+    @objc func replicationChanged(n: NSNotification) {
+        // The replication reporting the notification is n.object , but we
+        // want to look at the aggregate of both the push and pull.
+        
+        // First check whether replication is currently active:
+        let active = pull.status == CBLReplicationStatus.active || push.status == CBLReplicationStatus.active
+        active ? self.activityIndicator.startAnimating() : self.activityIndicator.stopAnimating()
+        // Now show a progress indicator:
+        self.activityIndicator.isHidden = !active;
+        self.progressBar.isHidden = !active;
+        if active {
+            var progress = 0.0
+            let total = push.changesCount + pull.changesCount
+            let completed = push.completedChangesCount + pull.completedChangesCount
+            if total > 0 {
+                progress = Double(completed) / Double(total);
+            }
+            self.progressBar.progress = Float(progress);
+        }
+    }
 }
+
 
